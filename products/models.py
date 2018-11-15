@@ -51,8 +51,8 @@ class ProductManager(models.Manager):
 		return self.get_queryset().featured()
 
 
-	def get_by_id(self, id):
-		qs = self.get_queryset().filter(id=id)
+	def get_by_title(self, title):
+		qs = self.get_queryset().filter(title=title)
 		if qs.count() == 1:
 			return qs.first()
 		return None

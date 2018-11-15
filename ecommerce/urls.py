@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^products/', include(("products.urls", 'products'), namespace='products')),
     url(r'^search/', include(("search.urls", 'search'), namespace='search')),
     url(r'^admin/', admin.site.urls),
-
+    
 ]
 
 if settings.DEBUG:
