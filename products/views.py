@@ -4,8 +4,12 @@ from django.shortcuts import render, get_object_or_404
 
 from carts.models import Cart
 from .models import Product, ProductManager
-
+from viewed_products.models import Viewed_Product
 recently_viewed = []
+prod_one = []
+prod_two = []
+prod_three = []
+prod_four = [] 
 
 class ProductFeaturedListView(ListView):
         template_name = "products/list.html"
@@ -30,7 +34,6 @@ class ProductListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        print("fooo")
         return Product.objects.all()
 
     # def get_queryset(self, *args, **kwargs):
@@ -52,6 +55,8 @@ class ProductListView(ListView):
         context['tags'] = recently_viewed
         # print(context['tags'].description)
         return context
+
+
 
 def product_list_view(request):
     queryset = Product.objects.all()
@@ -75,7 +80,6 @@ class RecentlyViewedView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        print("fooollllllll")
         return Product.objects.all()
 
 
@@ -116,18 +120,111 @@ class ProductDetailSlugView(DetailView):
         if len(recently_viewed) > 3:
             del recently_viewed[-1]
         # global recently_viewed
-        recently_viewed.insert(0,instance)
-        # recently_viewed = instance + recently_viewed            
-        # recently_viewed.append(instance)
-        print(recently_viewed)
+        if instance not in recently_viewed:
+            recently_viewed.insert(0,instance)
 
+        # print('recently_viewed')
+        # print(recently_viewed)
+
+        # get or create session 
+
+        viewed_product_obj, new_obj = Viewed_Product.objects.new_or_get(self.request)
+
+
+        product_id = self.kwargs.get('slug')
+        print('product_id is: ', product_id)
+
+       
+        # product_id = request.POST.get('product_id')
+        if product_id is not None:
+            try:
+                product_obj = Product.objects.get(slug=slug, active=True)
+            except Product.DoesNotExist:
+                print("Show message to user, product is gone?")
+                return redirect("viewed_product:home")
+            if product_obj not in viewed_product_obj.products.all():
+                print('prod_obj was not in viewed_prod_objects...')
+                viewed_product_obj.products.add(product_obj)
+                if viewed_product_obj.products.count() == 1:
+                    print('viewed_product_obj.products.count() is 1')
+
+                    global prod_one 
+                    prod_one= product_obj
+                    # prod_two, prod_three, prod_four = [],[],[]
+                    print('prod_one: ', prod_one)
+
+                if viewed_product_obj.products.count() == 2:
+                    print('viewed_product_obj.products.count() is 2')
+
+                    
+                    # global prod_one
+                    local_prod_two = prod_one
+                    global prod_two
+                    prod_two = local_prod_two
+                    # global prod_one
+                    prod_one = product_obj
+                    # prod_three, prod_four = [],[]
+                    print('prod_one: ', prod_one)
+                    print('prod_two: ', prod_two)
+
+                if viewed_product_obj.products.count() == 3:
+                    print('viewed_product_obj.products.count() is 3')
+
+                    
+                    # global prod_one
+                    local_prod_three = prod_two
+                    global prod_three
+                    prod_three = local_prod_three
+                    # global prod_one
+                    local_prod_two = prod_one
+                    # global prod_two
+                    prod_two = local_prod_two
+                    prod_one = product_obj
+                    # prod_three, prod_four = [],[]
+                    print('prod_one: ', prod_one)
+                    print('prod_two: ', prod_two)
+                    print('prod_two: ', prod_three)
+            
+
+            # print('4 - THE OBJECT', product_obj)
+            
+            if viewed_product_obj.products.count() > 5:
+                # sprint(viewed_product_obj.products[0])
+                print('removing: ', (2, product_obj))
+                viewed_product_obj.products.remove(2, product_obj)
+            print('5 - ALL PRODS', viewed_product_obj.products.all())
+
+                # del viewed_product_obj.products[0]
+                # viewed_product_obj.products.delete(product_obj)
+
+        if product_id is None:
+            print('product_id is None')        
+            request.session['viewed_product_items'] = viewed_product_obj.products.count()
+        print(' 7  - PORDUCT CoUNT')    
+        print(viewed_product_obj.products.count())    
         # print(slug)
         # self.object = self.get_object() 
         # context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
         # print(context)
         return instance
 
- 
+
+    def viewed_product_home(request):
+        request = self.request   
+        print('viewedeeee_product_obj')
+        
+        viewed_product_obj, new_obj = Viewed_Product.objects.new_or_get(self.request)
+
+        # return render(request, "viewed_products/home.html", {"viewed_product": viewed_product_obj})
+        print('viewed_product_obj')
+        print(viewed_product_obj)
+
+        return viewed_product_obj, new_obj
+
+
+# connect session to user
+
+# add this product to their session
 
 class ProductDetailView(DetailView):
 # queryset = Product.objects.all()

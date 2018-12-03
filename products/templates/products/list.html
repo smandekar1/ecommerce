@@ -29,7 +29,9 @@
 
 		<div>
 			<p>
-				<h5>Recently Viewed Items - Shop Again!</h5>
+				{% if tags %}
+					<h5>Trending Items!</h5>
+				{% endif %}
 			</p>
 			<div class='container-fluid'>
 				<div class='row row1'>
