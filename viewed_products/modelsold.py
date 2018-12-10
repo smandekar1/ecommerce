@@ -1,4 +1,4 @@
-import uuid
+
 
 from django.conf import settings
 from django.db import models
@@ -39,7 +39,7 @@ class Viewed_Product(models.Model):
     user        = models.ForeignKey(User,  on_delete=models.CASCADE, null=True, blank=True)
     # products    = models.SlugField(Product, blank=True)
     # products    = models.CharField(max_length=200)
-    # products    = models.SlugField(Product, blank=True)
+    products    = models.SlugField(Product, blank=True)
 
     
 
@@ -55,13 +55,8 @@ class Viewed_Product(models.Model):
     # def __str__(self):
     #     return str(self.id)
 
-class Viewed_Product_Object(models.Model):
-    # id          = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user        = models.ForeignKey(Viewed_Product,  on_delete=models.CASCADE)
-    products    = models.CharField(max_length=200)
 
-    # def __str__(self):
-    #     return '%s %s' % (self.user, self.products)
+
 
 
 

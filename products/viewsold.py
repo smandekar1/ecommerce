@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 
 from carts.models import Cart
 from .models import Product, ProductManager
-from viewed_products.models import Viewed_Product, Viewed_Product_Manager, Viewed_Product_Object
+from viewed_products.models import Viewed_Product, Viewed_Product_Manager
 recently_viewed = []
 prod_one = []
 prod_two = []
@@ -145,34 +145,7 @@ class ProductDetailSlugView(DetailView):
                 return redirect("viewed_product:home")
             # if product_obj not in viewed_product_obj.products.all():
             # print('prod_obj was not in viewed_prod_objects...')
-            
-
-            Viewed_Product_Object.objects.create(user=viewed_product_obj, products=product_obj)
-            product_objects = Viewed_Product_Object.objects.filter(user=viewed_product_obj).values()
-            # product_objects = product_objects.product_objects_set.all()
-            # for product in product_objects:
-            #     products = products
-            #     print(product_objects.products)
-            print(product_objects)
-
-            deleting_objects1 = Viewed_Product_Object.objects.filter(user=viewed_product_obj)[0:3]
-            # values_list('pk', flat=True)[:2])
-            
-            # CreditPerson.objects.filter(pk__in=CreditPerson.objects.filter(name=person.name).values_list('pk', flat=True)[1:]).delete()
-            print('prod objects sliced: ', deleting_objects1)
-
-            if len(product_objects) > 5:
-
-                Viewed_Product_Object.objects.filter(pk__in=Viewed_Product_Object.objects.filter(user=viewed_product_obj).values_list('pk',flat=True)[0:3]).delete()
-
-
-
-
-
-            deleting = Viewed_Product_Object.objects.filter(user=viewed_product_obj, id=20).values()
-            print('deleting: ', deleting)
-            deleting_object = Viewed_Product_Object.objects.filter(user=viewed_product_obj, id=20)
-            deleting_object.delete()
+            # Viewed_Product.objects.add(product_obj)
             # viewed_objects = viewed_product_obj.products.last()
             # print('this viewed objects: ', viewed_objects)
 
@@ -201,13 +174,89 @@ class ProductDetailSlugView(DetailView):
                 print('prod_one: ', prod_one)
                 print('prod_two: ', prod_two)
                 print('prod_three: ', prod_three)                
+                # if viewed_product_obj.products.count() == 1:
+                #     print('viewed_product_obj.products.count() is 1')
 
+                #     global prod_one 
+                #     prod_one= product_obj
+                #     # prod_two, prod_three, prod_four = [],[],[]
+                #     print('prod_one: ', prod_one)
+
+                # if viewed_product_obj.products.count() == 2:
+                #     print('viewed_product_obj.products.count() is 2')
+
+                    
+                #     # global prod_one
+                #     local_prod_two = prod_one
+                #     global prod_two
+                #     prod_two = local_prod_two
+                #     # global prod_one
+                #     prod_one = product_obj
+                #     # prod_three, prod_four = [],[]
+                #     print('prod_one: ', prod_one)
+                #     print('prod_two: ', prod_two)
+
+                # if viewed_product_obj.products.count() == 3:
+                #     print('viewed_product_obj.products.count() is 3')
+
+                    
+                #     # global prod_one
+                #     local_prod_three = prod_two
+                #     global prod_three
+                #     prod_three = local_prod_three
+                #     # global prod_one
+                #     local_prod_two = prod_one
+                #     # global prod_two
+                #     prod_two = local_prod_two
+                #     prod_one = product_obj
+                #     # prod_three, prod_four = [],[]
+                #     print('prod_one: ', prod_one)
+                #     print('prod_two: ', prod_two)
+                #     print('prod_two: ', prod_three)
+            
+
+                # if viewed_product_obj.products.count() > 3:
+                #     print('viewed_product_obj.products.count() is > 3')
+
+                    
+                #     # global prod_one
+                #     local_prod_three = prod_two
+                #     global prod_three
+                #     prod_three = local_prod_three
+                #     # global prod_one
+                #     local_prod_two = prod_one
+                #     # global prod_two
+                #     prod_two = local_prod_two
+                #     prod_one = product_obj
+                #     # prod_three, prod_four = [],[]
+                #     print('prod_one: ', prod_one)
+                #     print('prod_two: ', prod_two)
+                #     print('prod_two: ', prod_three)
+            # # print('4 - THE OBJECT', product_obj)
+
+            # if viewed_product_obj.products.count() > 2:
+            #     # sprint(viewed_product_obj.products[0])
+            #     print('before removing ', viewed_product_obj.products.all())
+            #     print('removing: ', (viewed_product_obj.products.first()))
+            #     viewed_product_obj.products.remove(viewed_product_obj.products.first())
+            #     # first_element = viewed_product_obj.products.first()
+            #     # print('first element', first_element)
+            # print('5 - After', viewed_product_obj.products.all())
+            
+            # if viewed_product_obj.products.count() > 4:
+            #     # print(viewed_product_obj.products[0])
+            #     print('removing: ', (2, product_obj))
+            #     viewed_product_obj.products.remove(2, product_obj)
+            # print('5 - ALL PRODS', viewed_product_obj.products.all())
+
+                # del viewed_product_obj.products[0]
+                # viewed_product_obj.products.delete(product_obj)
 
         if product_id is None:
             print('product_id is None')        
             request.session['viewed_product_items'] = viewed_product_obj.products.count()
         print(' 7  - PORDUCT CoUNT')    
-        # print(len(viewed_product_obj.products))    
+        print(len(viewed_product_obj.products))    
         # print(slug)
         # self.object = self.get_object() 
         # context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)

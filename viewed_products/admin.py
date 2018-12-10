@@ -12,6 +12,7 @@ from django.contrib import admin
 # admin.site.register(Viewed_Product, Viewed_ProductAdmin)
 
 
-from .models import Viewed_Product
+from .models import Viewed_Product, Viewed_Product_Object
 
 admin.site.register(Viewed_Product)
+admin.site.register(Viewed_Product_Object)
